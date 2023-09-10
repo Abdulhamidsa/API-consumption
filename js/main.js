@@ -3,6 +3,7 @@ const weatherInfoDiv = document.getElementById("weatherInfo");
 const mapImage = document.createElement("img");
 const weatherTemplate = document.getElementById("weatherTemplate");
 const fetchDataButton = document.getElementById("fetchData");
+const cityNameInput = document.querySelector("#cityInput");
 const eventContainer = document.querySelector(".event_container");
 const mapboxApiKey = "pk.eyJ1IjoiYWJvb29kc2EiLCJhIjoiY2xtYXcwcDZtMHp3ODNjcXE0YWY4dmNrMyJ9.0sDQp8tgynWP70CQOLZkrw";
 // let eventNames = "";
