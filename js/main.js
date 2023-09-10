@@ -66,6 +66,7 @@ function displayData(weatherData, eventData) {
 fetchDataButton.addEventListener("click", (e) => {
   e.preventDefault();
   const cityName = document.querySelector("#cityInput").value;
+  cityNameInput.blur();
   weatherInfoDiv.innerHTML = "";
   document.getElementById("mapContainer").innerHTML = "";
 
