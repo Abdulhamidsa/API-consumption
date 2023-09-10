@@ -5,18 +5,89 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-    <script src="js/main.js" defer></script>
+    <link rel="stylesheet" href="css/reset.css">
+    <script type="module" src="js/main.js" defer></script>
     <title>Api Consumption</title>
 </head>
 
 <body>
     <h1>City Information</h1>
-    <div>
+    <form class="form">
         <label for="cityInput">Enter City Name:</label>
         <input type="text" id="cityInput" placeholder="City Name">
         <button id="fetchData">Get City Info</button>
-    </div>
+    </form>
     <div id="weatherInfo"></div>
+    <div id="mapContainer"></div>
+    <template id="weatherTemplate">
+        <h2></h2>
+        <p class="temperature"></p>
+        <p class="weather-description"></p>
+        <p class="lon"></p>
+        <p class="lat"></p>
+        <img class="map_img" src="" alt="">
+        <div class="event_container">
+
+        </div>
+    </template>
+    <!-- <div class="event_container">
+        <div>
+            <div class="image_container">
+                <img
+                    src="https://s1.ticketm.net/dam/c/db5/5acfb9a3-4315-40c6-824f-e0fd31bd5db5_723691_TABLET_LANDSCAPE_LARGE_16_9.jpg">
+            </div>
+            <div class="details_container">
+                <h3>Title this is </h3>
+                <h4>Date: ${event.dates.start.localDate}</h4>
+                <p>${event.dates.status.code}</p>
+                <a href="${event.url}">link</a>
+
+                <p>${event._embedded.venues[0].name}</p>
+            </div>
+        </div>
+        <div>
+            <div class="image_container">
+                <img
+                    src="https://s1.ticketm.net/dam/c/db5/5acfb9a3-4315-40c6-824f-e0fd31bd5db5_723691_TABLET_LANDSCAPE_LARGE_16_9.jpg">
+            </div>
+            <div class="details_container">
+                <h3>Title this is </h3>
+                <h4>Date: ${event.dates.start.localDate}</h4>
+                <p>${event.dates.status.code}</p>
+                <a href="${event.url}">link</a>
+
+                <p>${event._embedded.venues[0].name}</p>
+            </div>
+        </div>
+        <div>
+            <div class="image_container">
+                <img
+                    src="https://s1.ticketm.net/dam/c/db5/5acfb9a3-4315-40c6-824f-e0fd31bd5db5_723691_TABLET_LANDSCAPE_LARGE_16_9.jpg">
+            </div>
+            <div class="details_container">
+                <h3>Title this is </h3>
+                <h4>Date: ${event.dates.start.localDate}</h4>
+                <p>${event.dates.status.code}</p>
+                <a href="${event.url}">link</a>
+
+                <p>${event._embedded.venues[0].name}</p>
+            </div>
+        </div>
+        <div>
+            <div class="image_container">
+                <img
+                    src="https://s1.ticketm.net/dam/c/db5/5acfb9a3-4315-40c6-824f-e0fd31bd5db5_723691_TABLET_LANDSCAPE_LARGE_16_9.jpg">
+            </div>
+            <div class="details_container">
+                <h3>Title this is </h3>
+                <h4>Date: ${event.dates.start.localDate}</h4>
+                <p>${event.dates.status.code}</p>
+                <a href="${event.url}">link</a>
+
+                <p>${event._embedded.venues[0].name}</p>
+            </div>
+        </div>
+    </div> -->
 </body>
 
 </html>

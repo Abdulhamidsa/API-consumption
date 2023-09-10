@@ -1,1 +1,37 @@
-﻿
+﻿.map_img {
+  width: 450px;
+  height: auto;
+  margin: auto;
+}
+.event_container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  /* max-width: 800px; */
+  margin: auto;
+  gap: 2rem;
+  /* justify-items: center; */
+  padding: 1rem;
+}
+
+.event_container > div {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.event_container .image_container {
+  overflow: hidden;
+  border-radius: 10px 10px 0 0;
+}
+
+.event_container img {
+  width: 100%;
+  /* min-height: 250px; */
+  display: block;
+}
+
+.event_container .details_container {
+  padding: 0.5rem;
+}
