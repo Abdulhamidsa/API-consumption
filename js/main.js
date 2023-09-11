@@ -5,12 +5,8 @@ const weatherTemplate = document.getElementById("weatherTemplate");
 const fetchDataButton = document.getElementById("fetchData");
 const cityNameInput = document.querySelector("#cityInput");
 const eventContainer = document.querySelector(".event_container");
-const mapboxApiKey = "pk.eyJ1IjoiYWJvb29kc2EiLCJhIjoiY2xtYXcwcDZtMHp3ODNjcXE0YWY4dmNrMyJ9.0sDQp8tgynWP70CQOLZkrw";
-// let eventNames = "";
-// let eventStart = "";
-// let eventStatus = "";
-// let eventVenues = "";
 
+const mapboxApiKey = "pk.eyJ1IjoiYWJvb29kc2EiLCJhIjoiY2xtYXcwcDZtMHp3ODNjcXE0YWY4dmNrMyJ9.0sDQp8tgynWP70CQOLZkrw";
 function fetchData(cityName) {
   if (!cityName) {
     console.log("ass");
@@ -23,6 +19,7 @@ function fetchData(cityName) {
   Promise.all([fetch(weatherUrl).then((response) => response.json()), fetch(eventUrl).then((response) => response.json())])
     .then(([weatherData, eventData]) => {
       displayData(weatherData, eventData);
+      console.log(weatherData);
     })
     .catch((error) => {
       console.error("Error fetching data:", error);
@@ -32,8 +29,12 @@ function fetchData(cityName) {
 function displayData(weatherData, eventData) {
   const clone = document.importNode(weatherTemplate.content, true);
   clone.querySelector("h2").textContent = `${weatherData.name}, ${weatherData.sys.country}`;
-  clone.querySelector(".temperature").textContent = `Temperature: ${weatherData.main.temp}°C`;
+  clone.querySelector(".temperature").textContent = `Temperature: ${(weatherData.main.temp - 273.15).toFixed(0)}°C`;
+  clone.querySelector(".temperature_feeling").textContent = `Feels like: ${(weatherData.main.feels_like - 273.15).toFixed(0)}°C`;
+  clone.querySelector(".temperature_humidity").textContent = `Humidity: ${weatherData.main.humidity}%`;
+
   clone.querySelector(".weather-description").textContent = `Weather: ${weatherData.weather[0].description}`;
+  clone.querySelector(".time_zone").textContent = new Date(Date.now() + weatherData.timezone * 1000).toLocaleTimeString();
   clone.querySelector("img").src = `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${weatherData.coord.lon},${weatherData.coord.lat},10.2,0,0/600x300?access_token=${mapboxApiKey}`;
 
   const eventContainer = clone.querySelector(".event_container");
@@ -42,6 +43,8 @@ function displayData(weatherData, eventData) {
     eventContainer.innerHTML = "<p>No events found</p>";
   } else {
     eventData._embedded.events.forEach((event) => {
+      const soldOut = event.dates.status.code === "offsale" ? "sold_out" : event.dates.status.code === "onsale" ? "available" : event.dates.status.code === "rescheduled" ? "rescheduled" : "";
+
       console.log(event);
       const eventHtml = `
       <div>
@@ -52,7 +55,7 @@ function displayData(weatherData, eventData) {
             <div class="details_container">
                 <h3>${event.name} </h3>
                 <h4>Date: ${event.dates.start.localDate}</h4>
-                <p>${event.dates.status.code}</p>
+                <p class=${soldOut}></p>
                 <a href="${event.url}">link</a>
                 <p>${event._embedded.venues[0].name ? event._embedded.venues[0].name : event._embedded.venues[0].address.line1}</p>
             </div>
@@ -65,8 +68,8 @@ function displayData(weatherData, eventData) {
 }
 
 fetchDataButton.addEventListener("click", (e) => {
-  e.preventDefault();
   const cityName = document.querySelector("#cityInput").value;
+  e.preventDefault();
   cityNameInput.blur();
   weatherInfoDiv.innerHTML = "";
   document.getElementById("mapContainer").innerHTML = "";
