@@ -1,78 +1,131 @@
 ﻿"use strict";
-const weatherInfoDiv = document.getElementById("weatherInfo");
-const mapImage = document.createElement("img");
-const weatherTemplate = document.getElementById("weatherTemplate");
-const fetchDataButton = document.getElementById("fetchData");
+import { mapboxApiKey, eventsApiKey, weatherApiKey } from "./api-keys.js";
+
+window.addEventListener("DOMContentLoaded", init);
+
+const weatherInfoDiv = document.querySelector("#weatherInfo");
+const weatherTemplate = document.querySelector("#weatherTemplate");
+const fetchDataButton = document.querySelector("#fetchData");
 const cityNameInput = document.querySelector("#cityInput");
-const eventContainer = document.querySelector(".event_container");
+function init() {
+  fetchDataButton.addEventListener("click", (e) => {
+    const cityName = document.querySelector("#cityInput").value;
+    e.preventDefault();
+    // BLUR TO CLOSE KEYBOARD ON PHONES WHEN CLICKING ENTER
+    cityNameInput.blur();
+    // CLEAR THE PREVIOUS DATA
+    weatherInfoDiv.innerHTML = "";
+    // mapContainer.innerHTML = "";
+    // PASS THE CITY NAME TO THE FETCH DATA
+    fetchData(cityName);
+  });
 
-const mapboxApiKey = "pk.eyJ1IjoiYWJvb29kc2EiLCJhIjoiY2xtYXcwcDZtMHp3ODNjcXE0YWY4dmNrMyJ9.0sDQp8tgynWP70CQOLZkrw";
+  console.log("SCRIPT IS LOADED");
+}
+
 function fetchData(cityName) {
-  if (!cityName) {
-    console.log("ass");
-  }
-  const weatherApiKey = "c233524953b26f5885f25e5f96816ad9";
   const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${weatherApiKey}`;
-  const eventsApiKey = "dGZ6cx8vkDKVJptA5d5stXMzGP7GeObZ";
   const eventUrl = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${eventsApiKey}&city=${cityName}`;
-
   Promise.all([fetch(weatherUrl).then((response) => response.json()), fetch(eventUrl).then((response) => response.json())])
     .then(([weatherData, eventData]) => {
+      // CHECK IF THE CITY IS NOT IN THE DATABASE GIVE FEEDBACK
+      if (weatherData.cod !== 200) {
+        weatherInfoDiv.innerHTML += `<p class="error"> <strong>${cityName}</strong>  is not a valid city name, please try again.</p>`;
+        //REMEMBER THAT RETURN WORK AS EXIT() IN PHP
+        return;
+      }
       displayData(weatherData, eventData);
       console.log(weatherData);
     })
     .catch((error) => {
       console.error("Error fetching data:", error);
-      weatherInfoDiv.innerHTML += `<p>Error fetching data for ${cityName}. Please try again.</p>`;
     });
 }
+function scrollEvent() {
+  document.querySelectorAll(".btn").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      let scrollDistance = document.documentElement.clientHeight;
+      if (btn.className.includes("scroll_up")) {
+        scrollDistance *= -1;
+        console.log("Scrolling up");
+      }
+      window.scrollBy(0, scrollDistance);
+    });
+  });
+}
 function displayData(weatherData, eventData) {
+  console.log();
+
   const clone = document.importNode(weatherTemplate.content, true);
   clone.querySelector("h2").textContent = `${weatherData.name}, ${weatherData.sys.country}`;
-  clone.querySelector(".temperature").textContent = `Temperature: ${(weatherData.main.temp - 273.15).toFixed(0)}°C`;
+  clone.querySelector(".temperature").textContent = (weatherData.main.temp - 273.15).toFixed(0) + "°C";
   clone.querySelector(".temperature_feeling").textContent = `Feels like: ${(weatherData.main.feels_like - 273.15).toFixed(0)}°C`;
   clone.querySelector(".temperature_humidity").textContent = `Humidity: ${weatherData.main.humidity}%`;
-
-  clone.querySelector(".weather-description").textContent = `Weather: ${weatherData.weather[0].description}`;
-  clone.querySelector(".time_zone").textContent = new Date(Date.now() + weatherData.timezone * 1000).toLocaleTimeString();
-  clone.querySelector("img").src = `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${weatherData.coord.lon},${weatherData.coord.lat},10.2,0,0/600x300?access_token=${mapboxApiKey}`;
-
+  clone.querySelector(".weather_description").textContent = weatherData.weather[0].main;
+  const mapContainer = clone.querySelector(".map_container");
+  clone.querySelector(".local_date").textContent = new Date(Date.now() + weatherData.timezone * 1000).toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long" }).replace(/,/g, " ");
+  const mapImg = clone.querySelector(".map_container img");
+  mapImg.src = `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${weatherData.coord.lon},${weatherData.coord.lat},10.2,0,0/600x300?access_token=${mapboxApiKey}`;
   const eventContainer = clone.querySelector(".event_container");
-
+  /////// CHECK IF THERE IS ANY EVENTS OR NAH
   if (typeof eventData._embedded === "undefined") {
-    eventContainer.innerHTML = "<p>No events found</p>";
+    const divElement = document.createElement("div");
+    divElement.className = "scroll_box scroll_none";
+    const paragraphElement = document.createElement("p");
+    paragraphElement.textContent = `No events happening at ${weatherData.name} at the momment`;
+    divElement.appendChild(paragraphElement);
+    weatherInfoDiv.appendChild(divElement);
   } else {
+    const { name } = weatherData;
+    const div_down_btn = document.createElement("div");
+    div_down_btn.className = "scroll_box btn scroll_down";
+    div_down_btn.innerHTML = `<p>See what's happening at ${name}</p><span class="material-symbols-outlined">expand_more</span>`;
+    ////
+    const div_up_btn = document.createElement("div");
+    div_up_btn.className = "scroll_box btn scroll_up";
+    div_up_btn.innerHTML = `<span class="material-symbols-outlined">expand_less</span><p>See weather</p>`;
+    eventContainer.appendChild(div_up_btn);
+    weatherInfoDiv.appendChild(div_down_btn);
+    ///// HANDLE THE STYLE OF THE STATUS OF THE EVENT
     eventData._embedded.events.forEach((event) => {
       const soldOut = event.dates.status.code === "offsale" ? "sold_out" : event.dates.status.code === "onsale" ? "available" : event.dates.status.code === "rescheduled" ? "rescheduled" : "";
-
-      console.log(event);
       const eventHtml = `
       <div>
-            <div class="image_container">
-                <img
-                    src="${event.images[8].url}">
+        <a href="${event.url}">
+          <div class="image_container">
+            <img src="${event.images[8].url}">
+          </div>
+        </a>
+          <div class="details_container">
+            <h3>${event.name} </h3>
+            <p class=${soldOut}></p> 
+            <div class="date">
+              <span class="material-symbols-outlined">calendar_month</span>
+              <p>Date: ${event.dates.start.localDate}</p>
             </div>
-            <div class="details_container">
-                <h3>${event.name} </h3>
-                <h4>Date: ${event.dates.start.localDate}</h4>
-                <p class=${soldOut}></p>
-                <a href="${event.url}">link</a>
+              <div class="location">
+                <span class="material-symbols-outlined">location_on</span>
                 <p>${event._embedded.venues[0].name ? event._embedded.venues[0].name : event._embedded.venues[0].address.line1}</p>
             </div>
-        </div>
+          </div>
+      </div>
       `;
       eventContainer.innerHTML += eventHtml;
     });
+    //// FOR LOOP TO CREATE LOCATION ICON RANDOMLY ON THE MAP
+    for (let i = 0; i < eventData._embedded.events.length; i++) {
+      const image = document.createElement("img");
+      image.src = "media/location_icon.png";
+      const left = Math.random() * 70;
+      const top = Math.random() * 70;
+      image.style.position = "absolute";
+      image.style.width = "3%";
+      image.style.height = "auto";
+      image.style.left = `${left}%`;
+      image.style.top = `${top}%`;
+      mapContainer.appendChild(image);
+    }
   }
   weatherInfoDiv.appendChild(clone);
+  scrollEvent();
 }
-
-fetchDataButton.addEventListener("click", (e) => {
-  const cityName = document.querySelector("#cityInput").value;
-  e.preventDefault();
-  cityNameInput.blur();
-  weatherInfoDiv.innerHTML = "";
-  document.getElementById("mapContainer").innerHTML = "";
-
-  fetchData(cityName);
-});

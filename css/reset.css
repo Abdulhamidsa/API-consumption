@@ -8,9 +8,12 @@
     - The "symbol *" part is to solve Firefox SVG sprite bug
     - The "html" element is excluded, otherwise a bug in Chrome breaks the CSS hyphens property (https://github.com/elad2412/the-new-css-reset/issues/36)
  */
+
 * {
   margin: 0;
   padding: 0;
+  list-style-type: none;
+  text-decoration: none;
 }
 
 /* Preferred box-sizing value */
@@ -52,6 +55,7 @@ table {
 input,
 textarea {
   -webkit-user-select: auto;
+  user-select: auto;
 }
 
 /* revert the 'white-space' property for textarea elements on Safari */
@@ -94,7 +98,9 @@ meter {
   -webkit-user-modify: read-write;
   overflow-wrap: break-word;
   -webkit-line-break: after-white-space;
+  line-break: after-white-space;
   -webkit-user-select: auto;
+  user-select: auto;
 }
 
 /* apply back the draggable feature - exist only in Chromium and Safari */
@@ -106,3 +112,4 @@ meter {
 :where(dialog:modal) {
   all: revert;
 }
+

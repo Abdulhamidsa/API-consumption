@@ -5,90 +5,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/reset.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <script type="module" src="js/main.js" defer></script>
-    <title>Api Consumption</title>
+    <title>Discover Your City</title>
 </head>
 
 <body>
-    <h1>City Information</h1>
-    <form class="form">
-        <label for="cityInput">Enter City Name:</label>
-        <input type="text" id="cityInput" placeholder="City Name">
-        <button id="fetchData">Get City Info</button>
-    </form>
-    <div id="weatherInfo"></div>
-    <div id="mapContainer"></div>
-    <template id="weatherTemplate">
-        <h2></h2>
-        <p class="temperature"></p>
-        <p class="temperature_feeling"></p>
-        <p class="temperature_humidity"></p>
-        <p class="time_zone"></p>
-        <p class="weather-description"></p>
-        <img class="map_img" src="" alt="">
-        <div class="event_container">
-
-        </div>
-    </template>
-    <!-- <div class="event_container">
-        <div>
-            <div class="image_container">
-                <img
-                    src="https://s1.ticketm.net/dam/c/db5/5acfb9a3-4315-40c6-824f-e0fd31bd5db5_723691_TABLET_LANDSCAPE_LARGE_16_9.jpg">
+    <main>
+        <img class="img_background" src="./media/main-bg.png" alt="">
+        <form>
+            <label for="cityInput"></label>
+            <input type="text" id="cityInput" placeholder="Search for a city">
+            <div>
+                <button type="submit" id="fetchData" class="material-symbols-outlined">
+                    arrow_right_alt
+                </button>
             </div>
-            <div class="details_container">
-                <h3>Title this is </h3>
-                <h4>Date: ${event.dates.start.localDate}</h4>
-                <p>${event.dates.status.code}</p>
-                <a href="${event.url}">link</a>
-
-                <p class="rescheduled">${event._embedded.venues[0].name}</p>
-            </div>
-        </div>
-        <div>
-            <div class="image_container">
-                <img
-                    src="https://s1.ticketm.net/dam/c/db5/5acfb9a3-4315-40c6-824f-e0fd31bd5db5_723691_TABLET_LANDSCAPE_LARGE_16_9.jpg">
-            </div>
-            <div class="details_container">
-                <h3>Title this is </h3>
-                <h4>Date: ${event.dates.start.localDate}</h4>
-                <p>${event.dates.status.code}</p>
-                <a href="${event.url}">link</a>
-
-                <p class="sold_out">${event._embedded.venues[0].name}</p>
-            </div>
-        </div>
-        <div>
-            <div class="image_container">
-                <img
-                    src="https://s1.ticketm.net/dam/c/db5/5acfb9a3-4315-40c6-824f-e0fd31bd5db5_723691_TABLET_LANDSCAPE_LARGE_16_9.jpg">
-            </div>
-            <div class="details_container">
-                <h3>Title this is </h3>
-                <h4>Date: ${event.dates.start.localDate}</h4>
-                <p>${event.dates.status.code}</p>
-                <a href="${event.url}">link</a>
-
-                <p>${event._embedded.venues[0].name}</p>
-            </div>
-        </div>
-        <div>
-            <div class="image_container">
-                <img
-                    src="https://s1.ticketm.net/dam/c/db5/5acfb9a3-4315-40c6-824f-e0fd31bd5db5_723691_TABLET_LANDSCAPE_LARGE_16_9.jpg">
-            </div>
-            <div class="details_container">
-                <h3>Title this is </h3>
-                <h4>Date: ${event.dates.start.localDate}</h4>
-                <p>${event.dates.status.code}</p>
-                <a href="${event.url}">link</a>
-
-                <p>${event._embedded.venues[0].name}</p>
-            </div>
-        </div>
-    </div> -->
+        </form>
+        <div id="weatherInfo"></div>
+        <template id="weatherTemplate">
+            <article id="weather_container">
+                <div class="weather_time">
+                    <h2></h2>
+                    <p class="local_date"></p>
+                    <p class="time_zone"></p>
+                </div>
+                <p class="temperature"></p>
+                <div class="temperature_container">
+                    <p class="weather_description"></p>
+                    <p class="temperature_feeling"></p>
+                    <p class="temperature_humidity"></p>
+                </div>
+            </article>
+            <article id="events_container">
+                <!-- <img class="img_background" src="./media/event_bg.png" alt=""> -->
+                <h2 class="event_headings">All Events: </h2>
+                <div class="event_container"></div>
+                <h2 class="event_headings">Events' Locations: </h2>
+                <div class="map_container">
+                    <img class="map_img" src="" alt="">
+                </div>
+            </article>
+        </template>
+    </main>
 </body>
 
 </html>
