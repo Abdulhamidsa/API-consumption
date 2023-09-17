@@ -24,16 +24,16 @@
     <main>
         <img class="img_background" src="./media/main-bg.png" alt="">
         <form>
-            <label for="cityInput"></label>
-            <input type="text" id="cityInput" placeholder="Search for a city">
+            <label for="city_input"></label>
+            <input type="text" id="city_input" placeholder="Search for a city">
             <div>
-                <button type="submit" id="fetchData" class="material-symbols-outlined">
+                <button type="submit" id="fetch_data" class="material-symbols-outlined">
                     arrow_right_alt
                 </button>
             </div>
         </form>
-        <div id="weatherInfo"></div>
-        <template id="weatherTemplate">
+        <div id="weather_info"></div>
+        <template id="weather_template">
             <article id="weather_container">
                 <div class="weather_time">
                     <h2></h2>
@@ -45,10 +45,10 @@
                     <p class="weather_description"></p>
                     <p class="temperature_feeling"></p>
                     <p class="temperature_humidity"></p>
+                    <p class="wind_speed"></p>
                 </div>
             </article>
             <article id="events_container">
-                <!-- <img class="img_background" src="./media/event_bg.png" alt=""> -->
                 <h2 class="event_headings">All Events: </h2>
                 <div class="event_container"></div>
                 <h2 class="event_headings">Events' Locations: </h2>

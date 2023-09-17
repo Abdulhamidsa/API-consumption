@@ -3,13 +3,13 @@ import { mapboxApiKey, eventsApiKey, weatherApiKey } from "./api-keys.js";
 
 window.addEventListener("DOMContentLoaded", init);
 
-const weatherInfoDiv = document.querySelector("#weatherInfo");
-const weatherTemplate = document.querySelector("#weatherTemplate");
-const fetchDataButton = document.querySelector("#fetchData");
-const cityNameInput = document.querySelector("#cityInput");
+const weatherInfoDiv = document.querySelector("#weather_info");
+const weatherTemplate = document.querySelector("#weather_template");
+const fetchDataButton = document.querySelector("#fetch_data");
+const cityNameInput = document.querySelector("#city_input");
 function init() {
   fetchDataButton.addEventListener("click", (e) => {
-    const cityName = document.querySelector("#cityInput").value;
+    const cityName = document.querySelector("#city_input").value;
     e.preventDefault();
     // BLUR TO CLOSE KEYBOARD ON PHONES WHEN CLICKING ENTER
     cityNameInput.blur();
@@ -61,6 +61,7 @@ function displayData(weatherData, eventData) {
   clone.querySelector(".temperature").textContent = (weatherData.main.temp - 273.15).toFixed(0) + "°C";
   clone.querySelector(".temperature_feeling").textContent = `Feels like: ${(weatherData.main.feels_like - 273.15).toFixed(0)}°C`;
   clone.querySelector(".temperature_humidity").textContent = `Humidity: ${weatherData.main.humidity}%`;
+  clone.querySelector(".wind_speed").textContent = `Wind speed: ${weatherData.wind.speed} m/s`;
   clone.querySelector(".weather_description").textContent = weatherData.weather[0].main;
   const mapContainer = clone.querySelector(".map_container");
   clone.querySelector(".local_date").textContent = new Date(Date.now() + weatherData.timezone * 1000).toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long" }).replace(/,/g, " ");

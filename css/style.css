@@ -81,7 +81,7 @@ form button[type="submit"] {
   cursor: pointer;
   content: " arrow ";
 }
-form label[for="cityInput"] {
+form label[for="city_input"] {
   font-size: 2rem;
   font-family: "Montserrat", sans-serif;
 }
@@ -231,7 +231,13 @@ form label[for="cityInput"] {
   content: "RESCHEDULED";
   background-color: var(--blue);
 }
-#weatherInfo .error {
+#weather_info .error {
   text-align: center;
   color: var(--red);
+}
+
+@media (max-width: 650px) {
+  form button[type="submit"] {
+    display: none;
+  }
 }
