@@ -40,7 +40,7 @@ h3 {
 }
 .temperature {
   font-size: clamp(4rem, 20vw, 7rem);
-  margin: 3rem;
+  margin: 2rem;
   text-align: center;
 }
 .weather_description {
