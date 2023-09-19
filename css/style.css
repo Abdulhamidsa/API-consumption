@@ -9,11 +9,13 @@
   --green: #329b32;
   --grey: #696969;
   --faded_grey: #0000001a;
+
+  --font-main: "Montserrat", sans-serif;
 }
 body {
   background-color: var(--bg-color);
   color: var(--secondary-color);
-  font-family: "Montserrat", sans-serif;
+  font-family: var(--font-main);
   overflow: hidden;
 }
 h2 {

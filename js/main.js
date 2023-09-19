@@ -1,6 +1,5 @@
 ﻿"use strict";
 import { mapboxApiKey, eventsApiKey, weatherApiKey } from "./api-keys.js";
-
 window.addEventListener("DOMContentLoaded", init);
 
 const weatherInfoDiv = document.querySelector("#weather_info");
